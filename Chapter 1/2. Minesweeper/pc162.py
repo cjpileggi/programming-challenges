@@ -15,42 +15,6 @@ def makeGame(grid,dims):
                             if(grid[x][y] == "."): grid[x][y] = "1"
                             else: grid[x][y] = str(int(grid[x][y]) + 1)
             elif grid[i][j] == ".": grid[i][j] = "0"
-
-    """
-    for i in range(0,dims[0]):
-        stri = ""
-        for j in range(0,dims[1]):
-            #print grid[i][j], j + 1, dims[1]
-            maxV, minV = False, False
-            if grid[i][j] == "*": 
-                newGrid[i][j] = "*"
-                
-            else:
-                
-            
-            
-            if grid[i][j] != "*":
-                num = 0
-                if i-1 >= 0: 
-                    if j - 1 >= 0: 
-                        if grid[i-1][j-1] == "*" : num += 1
-                        if grid[i][j-1] == "*" : num += 1
-                    if grid[i-1][j] == "*" : num += 1
-                    if j + 1 < dims[1]: 
-                        if grid[i-1][j+1] == "*" : num += 1
-                        if grid[i][j+1] == "*" : num += 1
-
-
-                if i+1 < dims[0]:
-                    if j - 1 >= 0:
-                        if grid[i+1][j-1] == "*" : num += 1
-                    if grid[i+1][j] == "*" : num += 1
-                    if j + 1 < dims[1]: 
-                        if grid[i+1][j+1] == "*" : num += 1
-                stri += str(num)
-            else: stri += "*"
-            
-        print stri"""
                 
 def pc162():
     tog, dim, rowRev, grid, game = True,[],0,[],1
