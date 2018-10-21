@@ -1,3 +1,5 @@
+#try classes
+
 from sys import stdin
 
 def newImgI(cmd):
@@ -14,15 +16,49 @@ def clearC(img):
 def locationL(img, cmd):
     img[(len(img)-int(cmd[2]))][int(cmd[1]) - 1] = cmd[3]
     return img
-"""    
-def vertV():
+
+def vertV(img, cmd):
+    for x in range(len(img)- int(cmd[3]),(len(img)- int(cmd[2])) + 1):
+        img[x][cmd[3]] = cmd[4]
+    return img    
+
+
+def horizH(img, cmd):
+    lower = int(cmd[2]) - 1
+    upper = int(cmd[3])
     
-def horizH():
+    img[int(cmd[1]) + 1][lower:upper] = cmd[4] * (upper - lower)
     
-def rectK():
+    return img
+
+def rectK(img, cmd):
     
-def fillF():
+    lower = int(cmd[1]) - 1
+    upper = int(cmd[3])
     
+    for y in range(len(img)- int(cmd[4]), (len(img)- int(cmd[2])) + 1):
+    
+        img[y][lower:upper] = cmd[5] * (upper - lower)
+    
+    return img
+    
+    
+"""def fillF(img, cmd):
+    
+    maxX = len(img[0])
+    maxY = len(img)
+    
+    pnt = [cmd[1],cmd[2]]
+    pnts = []
+    oldC = img[pnt[0] - 1][pnt[1] - 1]
+    
+    img[cmd[1] - 1][cmd[2] - 1] = cmd[3]
+    
+    if pnt[0] != 0:
+"""       
+    
+    
+"""  
 def saveS():"""
 
 if __name__ == "__main__":
@@ -44,17 +80,34 @@ if __name__ == "__main__":
       
     
     img = newImgI([0,5,6])
-    print(img)
-    
-    # img[0][3] = "h"
-    print(img)  
-    
+    print(img, "\n")
+
     img = locationL(img, [0, 2, 4, "F"])
-    print(img)
+    print(img, "\n")
             
                 
     img = locationL(img, [0, 5, 3, "y"])
-    print(img)
+    print(img, "\n")
+    
+    img = clearC(img)
+    print(img, '\n')
+    
+    img = vertV(img,[0,4,2,4,"B"])
+    print(img, '\n')
+    
+    img = horizH(img,[0,3,2,4,"J"])
+    print(img, '\n')
+    
+    img = newImgI([0,10,10])
+    print(img, "\n")
+    
+    img = rectK(img,[0,3,3,6,6,"V"])
+    print(img, "\n")
+    
+    """fillF(img, [0,3,3,"W"])
+    print(img, "\n")"""
+    
+    
             
         
         
