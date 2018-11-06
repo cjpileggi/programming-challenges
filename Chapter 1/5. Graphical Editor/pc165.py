@@ -42,20 +42,42 @@ def rectK(img, cmd):
     
     return img
     
-    
-"""def fillF(img, cmd):
+   
+
+def fillF(img, cmd):
     
     maxX = len(img[0])
     maxY = len(img)
     
-    pnt = [cmd[1],cmd[2]]
-    pnts = []
-    oldC = img[pnt[0] - 1][pnt[1] - 1]
+    origX = cmd[1]
+    origY = cmd[2]
     
-    img[cmd[1] - 1][cmd[2] - 1] = cmd[3]
+    newColor = cmd[3]
+    oldColor = img[origY][origX]
     
-    if pnt[0] != 0:
-"""       
+   # queueCur = 0
+    
+    
+    queue = []
+    
+    
+    img[origY][origX] = newColor
+    queue[origY][origX] = True
+    
+
+    
+    for i in range(-1,2):
+        for j in range(-1,2):
+            if origX + j in range(0, maxX) and origY + i in range(0,maxY):
+            
+                if img[origY + i][origX + j] == oldColor:
+                    queue[origY + i][origX + j] = False
+                else:
+                    queue[origY + i][origX + j] = True
+
+    
+
+    #if pnt[0] != 0:       
     
     
 """  
@@ -104,8 +126,8 @@ if __name__ == "__main__":
     img = rectK(img,[0,3,3,6,6,"V"])
     print(img, "\n")
     
-    """fillF(img, [0,3,3,"W"])
-    print(img, "\n")"""
+    img = fillF(img, [0,3,3,"W"])
+    print(img, "\n")
     
     
             
