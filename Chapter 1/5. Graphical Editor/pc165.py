@@ -2,6 +2,8 @@
 
 from sys import stdin
 
+from pandas import DataFrame
+
 def newImgI(cmd):
     #return [["0"] * int(cmd[1])] * int(cmd[2]) creates duplicates of same list(all elements in column affected)
     img = []
@@ -55,26 +57,40 @@ def fillF(img, cmd):
     newColor = cmd[3]
     oldColor = img[origY][origX]
     
-   # queueCur = 0
+    queueCur = 0
     
     
     queue = []
-    
+    visited = set()
     
     img[origY][origX] = newColor
-    queue[origY][origX] = True
+    queue.append((origX,origY))
     
-
+    nextX = 0
+    nextY = 0
     
-    for i in range(-1,2):
-        for j in range(-1,2):
-            if origX + j in range(0, maxX) and origY + i in range(0,maxY):
-            
-                if img[origY + i][origX + j] == oldColor:
-                    queue[origY + i][origX + j] = False
-                else:
-                    queue[origY + i][origX + j] = True
+    while queueCur < len(queue):
+        if img[queue[queueCur][1]][queue[queueCur][0]] == oldColor:
+            img[queue[queueCur][1]][queue[queueCur][0]] = newColor
+            if (queue[queueCur][1], queue[queueCur][0]) not in visited: 
+                visited.add((queue[queueCur][1], queue[queueCur][0]))
+                
+        for i in range(-1,2):
+            for j in range(-1,2):
+                nextX = queue[queueCur][0] + j
+                nextY = queue[queueCur][1] + i
+                if nextX in range(0, maxX) and nextY in range(0,maxY):
+                    #print(queue[queueCur], print(visited))
+                
+                    if img[nextY][nextX] == oldColor:
+                        queue.append((nextX,nextY))
+                    else:
+                        if (nextX,nextY) not in visited:
+                            visited.add((nextX,nextY))
+        queueCur += 1
+        
 
+    return img
     
 
     #if pnt[0] != 0:       
@@ -102,32 +118,32 @@ if __name__ == "__main__":
       
     
     img = newImgI([0,5,6])
-    print(img, "\n")
+    print(DataFrame(img), "\n")
 
     img = locationL(img, [0, 2, 4, "F"])
-    print(img, "\n")
+    print(DataFrame(img), "\n")
             
                 
     img = locationL(img, [0, 5, 3, "y"])
-    print(img, "\n")
+    print(DataFrame(img), "\n")
     
     img = clearC(img)
-    print(img, '\n')
+    print(DataFrame(img), "\n")
     
     img = vertV(img,[0,4,2,4,"B"])
-    print(img, '\n')
+    print(DataFrame(img), "\n")
     
     img = horizH(img,[0,3,2,4,"J"])
-    print(img, '\n')
+    print(DataFrame(img), "\n")
     
     img = newImgI([0,10,10])
-    print(img, "\n")
+    print(DataFrame(img), "\n")
     
     img = rectK(img,[0,3,3,6,6,"V"])
-    print(img, "\n")
+    print(DataFrame(img), "\n")
     
-    img = fillF(img, [0,3,3,"W"])
-    print(img, "\n")
+    img = fillF(img, [0,4,4,"W"])
+    print(DataFrame(img), "\n")
     
     
             
