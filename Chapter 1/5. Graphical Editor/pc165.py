@@ -83,10 +83,11 @@ def fillF(img, cmd):
                     #print(queue[queueCur], print(visited))
                 
                     if img[nextY][nextX] == oldColor:
-                        queue.append((nextX,nextY))
+                            queue.append((nextX,nextY))
                     else:
                         if (nextX,nextY) not in visited:
                             visited.add((nextX,nextY))
+                    #print(DataFrame(img))
         queueCur += 1
         
 
@@ -96,16 +97,22 @@ def fillF(img, cmd):
     #if pnt[0] != 0:       
     
     
-"""  
-def saveS():"""
 
+def saveS(img,fName):
+    print(fName)
+    
+    for x in img:
+        for y in x:
+            print(y, end="")
+        print("")
+    
 if __name__ == "__main__":
-    img = []
+    """img = []
     with open('pc165_inputs.txt') as f:
         for line in f: #stdin:#f: 
             #cmd = [x for x in line.split()]
             #print(cmd)
-            """if cmd[0] == "I": 
+            if cmd[0] == "I": 
                 img = newImgI(cmd)
                 print(img)
             if cmd[0] == "C":
@@ -144,6 +151,13 @@ if __name__ == "__main__":
     
     img = fillF(img, [0,4,4,"W"])
     print(DataFrame(img), "\n")
+    
+    img = fillF(img, [0,3,3,"Q"])
+    print(DataFrame(img), "\n")
+    
+    saveS(img,"k.bng")
+    
+    
     
     
             
