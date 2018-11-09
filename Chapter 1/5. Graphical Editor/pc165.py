@@ -4,13 +4,39 @@ from sys import stdin
 
 from pandas import DataFrame
 
-def newImgI(cmd):
-    #return [["0"] * int(cmd[1])] * int(cmd[2]) creates duplicates of same list(all elements in column affected)
-    img = []
+
+class Image:
     
-    for i in range(0,cmd[2]):
-        img.append(["0" for x in range(0,cmd[1])])
-    return img
+    def __init__(self):
+        self.img = []
+        
+    def newImgI(self, cmd):
+        #return [["0"] * int(cmd[1])] * int(cmd[2]) creates duplicates of same list(all elements in column affected)
+        self.img = []
+        for i in range(0,cmd[2]):
+            self.img.append(["0" for x in range(0,cmd[1])])
+
+  
+
+"""  def myfunc(abc):
+    print("Hello my name is " + abc.name)
+
+
+p1.myfunc()
+
+
+p1.age = 40
+
+#del p1.age
+print(p1.age)
+
+p1.j = "ug"
+
+print(p1.j)
+
+del p1"""
+
+
     
 def clearC(img):
     return [["0" for x in img[0]] for x in img]
@@ -63,40 +89,39 @@ def fillF(img, cmd):
     queue = []
     visited = set()
     
-    img[origY][origX] = newColor
+    #img[origY][origX] = newColor
     queue.append((origX,origY))
+    visited.add((origX,origY))
     
     nextX = 0
     nextY = 0
     
+    img[queue[queueCur][1]][queue[queueCur][0]] = newColor
+    if (queue[queueCur][0], queue[queueCur][1]) not in visited: 
+        visited.add((queue[queueCur][0], queue[queueCur][1]))
+ 
+
+    if (queue[queueCur][0], queue[queueCur][1]) not in visited: 
+        visited.add((queue[queueCur][0], queue[queueCur][1]))
+ 
     while queueCur < len(queue):
-        if img[queue[queueCur][1]][queue[queueCur][0]] == oldColor:
-            img[queue[queueCur][1]][queue[queueCur][0]] = newColor
-            if (queue[queueCur][1], queue[queueCur][0]) not in visited: 
-                visited.add((queue[queueCur][1], queue[queueCur][0]))
-                
         for i in range(-1,2):
             for j in range(-1,2):
-                nextX = queue[queueCur][0] + j
-                nextY = queue[queueCur][1] + i
-                if nextX in range(0, maxX) and nextY in range(0,maxY):
-                    #print(queue[queueCur], print(visited))
-                
-                    if img[nextY][nextX] == oldColor:
-                            queue.append((nextX,nextY))
-                    else:
-                        if (nextX,nextY) not in visited:
-                            visited.add((nextX,nextY))
-                    #print(DataFrame(img))
+                    nextX = queue[queueCur][0] + j
+                    nextY = queue[queueCur][1] + i
+                    
+                    if nextX in range(0, maxX) and nextY in range(0,maxY):
+                        if img[nextY][nextX] == oldColor:
+                            img[nextY][nextX] = newColor
+                            if (nextX,nextY) not in visited:
+                                queue.append((nextX,nextY))
         queueCur += 1
-        
-
+    print(DataFrame(img))
+    print("Queue",queue)
+    print("Visit", visited)
+    
     return img
-    
 
-    #if pnt[0] != 0:       
-    
-    
 
 def saveS(img,fName):
     print(fName)
@@ -123,11 +148,13 @@ if __name__ == "__main__":
                 print(img)"""
             
       
+    img = Image()
     
-    img = newImgI([0,5,6])
-    print(DataFrame(img), "\n")
+    
+    img.newImgI([0,5,6])
+    print(DataFrame(img.img), "\n")
 
-    img = locationL(img, [0, 2, 4, "F"])
+    """img = locationL(img, [0, 2, 4, "F"])
     print(DataFrame(img), "\n")
             
                 
@@ -143,19 +170,19 @@ if __name__ == "__main__":
     img = horizH(img,[0,3,2,4,"J"])
     print(DataFrame(img), "\n")
     
-    img = newImgI([0,10,10])
+    img = newImgI([0,20,20])
     print(DataFrame(img), "\n")
     
     img = rectK(img,[0,3,3,6,6,"V"])
+    print(DataFrame(img), "\n")"""
+    
+    """img = fillF(img, [0,4,4,"W"])
+    print(DataFrame(img), "\n")"""
+    
+    """img = fillF(img, [0,6,3,"Q"])
     print(DataFrame(img), "\n")
     
-    img = fillF(img, [0,4,4,"W"])
-    print(DataFrame(img), "\n")
-    
-    img = fillF(img, [0,3,3,"Q"])
-    print(DataFrame(img), "\n")
-    
-    saveS(img,"k.bng")
+    saveS(img,"k.bng")"""
     
     
     
