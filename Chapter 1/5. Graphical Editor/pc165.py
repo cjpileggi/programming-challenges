@@ -1,8 +1,9 @@
 from sys import stdin
 
-from pandas import DataFrame
+#from pandas import DataFrame
 
 # x left ro right, y top to bottom
+#test to see if max min needed
 class Image:
     
     def __init__(self):
@@ -31,34 +32,40 @@ class Image:
         #creates duplicates of same list(all elements in column affected)
         self.img = []
         for i in range(0,N):
-            self.img.append(["0" for x in range(0,M)])
+            self.img.append(["O" for x in range(0,M)])
 
     def locationL(self, X, Y, C):
         self.img[Y - 1][X - 1] = C
         
     def clearC(self):
-        self.img = [["0" for x in self.img[0]] for x in self.img]
+        self.img = [["O" for x in self.img[0]] for x in self.img]
         
     def vertV(self, X, Y1, Y2, C):
-        numRows = len(self.img)
-        for x in range((numRows - Y2 - 1), (numRows - Y1)):
-            self.img[x][Y2] = C  
+        
+        for y in range((min(Y2,Y1) - 1 ), (max(Y1,Y2))):
+            self.img[y][X-1] = C  
 
     def horizH(self, X1, X2, Y, C):
-        lower = X2 - 2
-        upper = Y - 1
+        lower = min(X2,X1) - 1
+        upper = max(X1,X2) - 1
         
-        self.img[X1 + 1][lower:upper] = C * (upper - lower) #
+        """for x in range(lower, upper + 1):
+        
+            self.img[Y-1][x] = C #* (upper + 1) - lower)"""
+        
+
+        self.img[Y-1][lower:upper + 1] = C * ((upper - lower) + 1)
 
 
-    def rectK(self, X1, X2, Y1, Y2, C):
+
+    def rectK(self, X1, Y1, X2, Y2, C):
     
         lower = X1 - 1
-        upper = Y1
+        upper = X2 - 1
         
-        for y in range(X2 - 1, Y2):
+        for y in range(Y1 - 1, Y2):
         
-            self.img[y][lower:upper] = C * (upper - lower)
+            self.img[y][lower:upper + 1] = C * ((upper - lower) + 1)
     
     def fillF(self, X, Y, C):
         
@@ -70,39 +77,41 @@ class Image:
         
         oldColor = self.img[origY][origX]
         
-        queueCur = 0
         
+        if oldColor != C:
+            
+            queueCur = 0
+            
+            queue = []
+            visited = set()
+            
+            #img[origY][origX] = newColor
+            queue.append((origX,origY))
+            visited.add((origX,origY))
+            
+            nextX = 0
+            nextY = 0
+            
+            self.img[queue[queueCur][1]][queue[queueCur][0]] = C
+            if (queue[queueCur][0], queue[queueCur][1]) not in visited: 
+                visited.add((queue[queueCur][0], queue[queueCur][1]))
+         
         
-        queue = []
-        visited = set()
-        
-        #img[origY][origX] = newColor
-        queue.append((origX,origY))
-        visited.add((origX,origY))
-        
-        nextX = 0
-        nextY = 0
-        
-        self.img[queue[queueCur][1]][queue[queueCur][0]] = C
-        if (queue[queueCur][0], queue[queueCur][1]) not in visited: 
-            visited.add((queue[queueCur][0], queue[queueCur][1]))
-     
-    
-        if (queue[queueCur][0], queue[queueCur][1]) not in visited: 
-            visited.add((queue[queueCur][0], queue[queueCur][1]))
-     
-        while queueCur < len(queue):
-            for i in range(-1,2):
-                for j in range(-1,2):
-                        nextX = queue[queueCur][0] + j
-                        nextY = queue[queueCur][1] + i
-                        
-                        if nextX in range(0, maxX) and nextY in range(0,maxY):
-                            if self.img[nextY][nextX] == oldColor:
-                                self.img[nextY][nextX] = C
-                                if (nextX,nextY) not in visited:
-                                    queue.append((nextX,nextY))
-            queueCur += 1
+            if (queue[queueCur][0], queue[queueCur][1]) not in visited: 
+                visited.add((queue[queueCur][0], queue[queueCur][1]))
+         
+            while queueCur < len(queue):
+                for i in range(-1,2):
+                    for j in range(-1,2):
+                            nextX = queue[queueCur][0] + j
+                            nextY = queue[queueCur][1] + i
+                            
+                            if nextX in range(0, maxX) and nextY in range(0,maxY):
+                                if self.img[nextY][nextX] == oldColor:
+                                    self.img[nextY][nextX] = C
+                                    if (nextX,nextY) not in visited:
+                                        queue.append((nextX,nextY))
+                queueCur += 1
 
 
     def saveS(self,Name):
@@ -117,6 +126,8 @@ class Image:
     
 if __name__ == "__main__":
     img = Image()
-    with open('pc165_inputs.txt') as f:
-        for line in f: #stdin:#f: 
-            img.command([x for x in line.split()])
+    #with open('pc165_inputs.txt') as f:
+    for line in stdin:#f: 
+        #print(line)
+        img.command([x for x in line.split()])
+    del img
