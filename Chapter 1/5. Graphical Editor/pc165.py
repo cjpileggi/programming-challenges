@@ -60,10 +60,10 @@ class Image:
 
     def rectK(self, X1, Y1, X2, Y2, C):
     
-        lower = X1 - 1
-        upper = X2 - 1
+        lower = min(X1,X2) - 1
+        upper = max(X2,X1) - 1
         
-        for y in range(Y1 - 1, Y2):
+        for y in range(min(Y1,Y2) - 1, max(Y2,Y1)):
         
             self.img[y][lower:upper + 1] = C * ((upper - lower) + 1)
     
@@ -131,3 +131,4 @@ if __name__ == "__main__":
         #print(line)
         img.command([x for x in line.split()])
     del img
+    print()
