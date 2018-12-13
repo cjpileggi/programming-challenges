@@ -1,3 +1,9 @@
+/*
+	UVa Problem
+	
+
+*/
+
 #ifndef ONLINE_JUDGE
     #define ONLINE_JUDGE false
 #endif
@@ -8,6 +14,13 @@
 
 using std::unordered_map;
 
+/*
+	cycleLength
+	
+	
+
+
+*/
 unsigned int cycleLength(unsigned int n, unordered_map<int, int> &maxMem)
 {
 	unsigned int orig = n, cnt = 1;
