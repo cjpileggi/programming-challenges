@@ -9,6 +9,8 @@ using std::string;
 class Image {
 
 	public:
+    unsigned int **img;
+
     void command(string[] cmd)
     	{
     		switch (cmd[0]) {
@@ -40,6 +42,18 @@ class Image {
     				break;
     		}
     	}
+
+      void newImgI(unsigned int M, unsigned int N)
+      {
+            //return [["0"] * int(cmd[1])] * int(cmd[2])
+            //creates duplicates of same list(all elements in column affected)
+            img = new unsigned int*[N];
+            for(int i = 0; i < N; i++)
+            {
+                img[i] = new unsigned int[M];
+              //self.img.append(["O" for x in range(0,M)])
+            }
+      }
 
 };
 
