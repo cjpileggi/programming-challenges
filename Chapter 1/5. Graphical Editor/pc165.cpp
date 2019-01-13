@@ -135,41 +135,67 @@ class Image {
       char oldColor = img[origY][origX];
 
 
-      /*if(oldColor != C)
+      if(oldColor != C)
       {
-        int queueCur = 0;
+        bool *visited = new bool[V];
+        for(int i = 0; i < V; i++) { visited[i] = false; }
 
-        /*queue = []
-        visited = set()
+        list<int> queue;
 
-        //img[origY][origX] = newColor
-        queue.append((origX,origY))
-        visited.add((origX,origY))
+        visited[s] = true;
+        queue.push_back(s);
 
-        nextX = 0
-        nextY = 0
+        list<int>::iterator i;
 
-        self.img[queue[queueCur][1]][queue[queueCur][0]] = C
-        if (queue[queueCur][0], queue[queueCur][1]) not in visited:
-        visited.add((queue[queueCur][0], queue[queueCur][1]))
+        while(!queue.empty())
+        {
+            // Dequeue a vertex from queue and print it
+            s = queue.front();
+            cout << s << " ";
+            queue.pop_front();
+
+            // Get all adjacent vertices of the dequeued
+            // vertex s. If a adjacent has not been visited,
+            // then mark it visited and enqueue it
+            for (i = adj[s].begin(); i != adj[s].end(); ++i)
+            {
+              if (!visited[*i])
+              {
+                visited[*i] = true;
+                queue.push_back(*i);
+              }
+            }
+            /*visited = set()
+
+            //img[origY][origX] = newColor
+            queue.append((origX,origY))
+            visited.add((origX,origY))
+
+            nextX = 0
+            nextY = 0
+
+            self.img[queue[queueCur][1]][queue[queueCur][0]] = C
+            if (queue[queueCur][0], queue[queueCur][1]) not in visited:
+            visited.add((queue[queueCur][0], queue[queueCur][1]))
 
 
-        if (queue[queueCur][0], queue[queueCur][1]) not in visited:
-        visited.add((queue[queueCur][0], queue[queueCur][1]))
+            if (queue[queueCur][0], queue[queueCur][1]) not in visited:
+            visited.add((queue[queueCur][0], queue[queueCur][1]))
 
-        while queueCur < len(queue):
-        for i in range(-1,2):
-        for j in range(-1,2):
-        nextX = queue[queueCur][0] + j
-        nextY = queue[queueCur][1] + i
+            while queueCur < len(queue):
+            for i in range(-1,2):
+            for j in range(-1,2):
+            nextX = queue[queueCur][0] + j
+            nextY = queue[queueCur][1] + i
 
-        if nextX in range(0, maxX) and nextY in range(0,maxY):
-        if self.img[nextY][nextX] == oldColor:
-        self.img[nextY][nextX] = C
-        if (nextX,nextY) not in visited:
-        queue.append((nextX,nextY))
-        queueCur += 1
-      }*/
+            if nextX in range(0, maxX) and nextY in range(0,maxY):
+            if self.img[nextY][nextX] == oldColor:
+            self.img[nextY][nextX] = C
+            if (nextX,nextY) not in visited:
+            queue.append((nextX,nextY))
+            queueCur += 1
+        */}
+      }
     }
 
     void saveS(char Name)
