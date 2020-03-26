@@ -1,7 +1,7 @@
 /*
-	UVa Problem
-	
+	UVa Problem 100
 
+Uses unsigned int throughout program since input is always 0 or greater
 */
 
 #ifndef ONLINE_JUDGE
@@ -14,13 +14,7 @@
 
 using std::unordered_map;
 
-/*
-	cycleLength
-	
-	
 
-
-*/
 unsigned int cycleLength(unsigned int n, unordered_map<int, int> &maxMem)
 {
 	unsigned int orig = n, cnt = 1;
@@ -29,7 +23,7 @@ unsigned int cycleLength(unsigned int n, unordered_map<int, int> &maxMem)
 		cnt++;
 		if (n%2 == 1) {n = 3*n+1;}
 		else {n /= 2;}
-		
+
 		if (maxMem.find(n) != maxMem.end())
 		{
 			cnt = maxMem[n] + (cnt - 1);
@@ -37,20 +31,25 @@ unsigned int cycleLength(unsigned int n, unordered_map<int, int> &maxMem)
 		}
 	}
 	maxMem[orig] = cnt;
-	
+
 	return cnt;
 }
 
-
-unsigned int maxCycle(unsigned int i, unsigned int j, unordered_map<int, int> &maxMem) {
-    if (i > j)
+//
+unsigned int maxCycle(unsigned int i, unsigned int j, unordered_map<int, int> &maxMem)
+{
+	// The judge might pass a pair of integers where the first is greater than the second
+	// Swap the values if that is the case
+	// The algorithm will run incorrectly if the first integer is greater than the second
+	if (i > j)
 	{
 		unsigned int temp;
 		temp = i;
 		i = j;
 		j = temp;
 	}
-	
+
+
 	unsigned int maxCnt = 0, curCycle;
 	for (unsigned int c = i; c <= j; c++)
 	{
@@ -63,47 +62,37 @@ unsigned int maxCycle(unsigned int i, unsigned int j, unordered_map<int, int> &m
 		{
 			curCycle = cycleLength(c, maxMem);
 		}
-		
-		
+
 		if (curCycle >  maxCnt)
 		{
 			maxCnt = curCycle;
 		}
 	}
-	
+
 	return maxCnt;
-} 
+}
 
 int main()
-{	
-	unsigned int i, j;
-	unordered_map<int, int> maxMem;
-	
-	//FILE *in = fopen("./text.txt", "r");
-	//while(fscanf(in, "%d %d", &i, &j) != EOF ) {
-	while(scanf("%d %d", &i, &j) != EOF ) {
-		
-		printf("%d %d %d\n", i, j, maxCycle(i, j, maxMem)); 
-	} 
-	// Create a map iterator and point to beginning of map
-	/*std::map<int, int>::iterator it = maxMem.begin();
- 
-	// Iterate over the map using Iterator till end.
-	while (it != maxMem.end())
+{
+	unsigned int i, j; // Two input integers
+	unordered_map<int, int> maxMem; // Unordered map of previously determined cycles
+
+	// Inputs from online judge
+	while(scanf("%d %d", &i, &j) != EOF )
 	{
-		// Accessing KEY from element pointed by it.
-		int word = it->first;
- 
-		// Accessing VALUE from element pointed by it.
-		int count = it->second;
- 
-		std::cout << word << " :: " << count << std::endl;
- 
-		// Increment the Iterator to point to next entry
-		it++;
-	} */
-    return 0;
-} 
+		printf("%d %d %d\n", i, j, maxCycle(i, j, maxMem));
+	}
+
+	// Inputs from file used for testing
+	/*
+	FILE *in = fopen("./p161.txt", "r");
+	while(fscanf(in, "%d %d", &i, &j) != EOF )
+	{
+		printf("%d %d %d\n", i, j, maxCycle(i, j, maxMem));
+	}
+	*/
+  return 0;
+}
 
 /*
 #ifndef ONLINE_JUDGE
@@ -124,14 +113,14 @@ unsigned int cycleLength(unsigned int n, unordered_map<int, int> &maxMem)
     else
 	{
         unsigned int orig = n, cnt = 1;
-    
+
         while (n != 1) {
             cnt++;
             if (n%2 == 1) {n = 3*n+1;}
             else {n = n/2;}
 		}
         maxMem[orig] = cnt;
-		
+
         return cnt;
 	}
 }
@@ -145,9 +134,9 @@ unsigned int maxCycle(unsigned int i, unsigned int j, unordered_map<int, int> &m
 		i = j;
 		j = temp;
 	}
-	
+
 	unsigned int maxCnt = 0;
-	
+
 	for (unsigned int c = i; c <= j; c++)
 	{
 		unsigned int curCycle = cycleLength(c, maxMem);
@@ -156,37 +145,37 @@ unsigned int maxCycle(unsigned int i, unsigned int j, unordered_map<int, int> &m
 			maxCnt = curCycle;
 		}
 	}
-	
+
 	return maxCnt;
 }
 
 int main()
-{	
+{
 	unsigned int i, j;
 	unordered_map<int, int> maxMem;
-	
+
 	//FILE *in = fopen("./text.txt", "r");
 	//while(fscanf(in, "%d %d", &i, &j) != EOF ) {
 	while(scanf("%d %d", &i, &j) != EOF ) {
-		
-		printf("%d %d %d\n", i, j, maxCycle(i, j, maxMem)); 
-	} 
+
+		printf("%d %d %d\n", i, j, maxCycle(i, j, maxMem));
+	}
 	// Create a map iterator and point to beginning of map
 	/*std::map<int, int>::iterator it = maxMem.begin();
- 
+
 	// Iterate over the map using Iterator till end.
 	while (it != maxMem.end())
 	{
 		// Accessing KEY from element pointed by it.
 		int word = it->first;
- 
+
 		// Accessing VALUE from element pointed by it.
 		int count = it->second;
- 
+
 		std::cout << word << " :: " << count << std::endl;
- 
+
 		// Increment the Iterator to point to next entry
 		it++;
-	} 
+	}
     return 0;
 }*/
