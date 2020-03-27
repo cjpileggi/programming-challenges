@@ -1,7 +1,11 @@
 /*
-	UVa Problem 100
+	Online Judge Problem 100 - The 3n + 1 problem
 
-Uses unsigned int throughout program since input is always 0 or greater
+	Programming Challenges (Skiena & Revilla)
+	Chapter 1.6.1
+
+	Runtime - ~0.050s
+- Uses unsigned int throughout program since input is always 0 or greater
 */
 
 #ifndef ONLINE_JUDGE
@@ -11,31 +15,35 @@ Uses unsigned int throughout program since input is always 0 or greater
 #include <unordered_map>
 #include <iostream>
 
-
 using std::unordered_map;
 
-
+// Find the cycle-length of integer n according to the algorithm provided in the problem
 unsigned int cycleLength(unsigned int n, unordered_map<int, int> &maxMem)
 {
-	unsigned int orig = n, cnt = 1;
-
-	while (n != 1) {
+	// Loop to find the sequence of numbers starting with n and ending 1
+	// Increment cnt by 1 for each iteration in the loop. The final number is the cycle cycleLength
+	// Begin with 1 since 1 will always be the last integer in a sequence
+	unsigned int seq = n, cnt = 1;
+	while (seq != 1)
+	{
 		cnt++;
-		if (n%2 == 1) {n = 3*n+1;}
-		else {n /= 2;}
+		if (seq % 2 == 1) { seq = 3*seq + 1; }
+		else { seq /= 2; }
 
-		if (maxMem.find(n) != maxMem.end())
+		// If the cycle-length of current value seq was previously calculated and stored in maxMem,
+		// retrieve seq's cycle length in maxMem, add it to cnt and exit the while loop
+		if (maxMem.find(seq) != maxMem.end())
 		{
-			cnt = maxMem[n] + (cnt - 1);
+			cnt = maxMem[seq] + (cnt - 1);
 			break;
 		}
 	}
-	maxMem[orig] = cnt;
+	maxMem[n] = cnt;
 
 	return cnt;
 }
 
-//
+// Find the integer that exists between integers i and j with the greatest cycle-length
 unsigned int maxCycle(unsigned int i, unsigned int j, unordered_map<int, int> &maxMem)
 {
 	// The judge might pass a pair of integers where the first is greater than the second
@@ -49,35 +57,40 @@ unsigned int maxCycle(unsigned int i, unsigned int j, unordered_map<int, int> &m
 		j = temp;
 	}
 
-
+	// Loop through all integers between i and j find the integer with the greatest cycle-length
+	// maxCnt - integer with the greatest cycle-length in the loop
+	// curCycle - cycle-length of integer evaluated in loop iteration
 	unsigned int maxCnt = 0, curCycle;
-	for (unsigned int c = i; c <= j; c++)
+	for (unsigned int n = i; n <= j; n++)
 	{
 		curCycle = 0;
-		if (maxMem.find(c) != maxMem.end())
+		// If integer n was already evaluated and the cycle-length was stored in maxMem, use that value
+		// Otherwise, calculate the cycle-lenth of n
+		if (maxMem.find(n) != maxMem.end())
 		{
-			curCycle = maxMem[c];
+			curCycle = maxMem[n];
 		}
 		else
 		{
-			curCycle = cycleLength(c, maxMem);
+			curCycle = cycleLength(n, maxMem);
 		}
-
+		// Assign to maxCnt the greatest cycle-length in the for-loop
 		if (curCycle >  maxCnt)
 		{
 			maxCnt = curCycle;
 		}
 	}
-
 	return maxCnt;
 }
 
 int main()
 {
 	unsigned int i, j; // Two input integers
-	unordered_map<int, int> maxMem; // Unordered map of previously determined cycles
+	// Unordered map used to store previously determined cycles
+	// <integer, cycle length of integer>
+	unordered_map<int, int> maxMem;
 
-	// Inputs from online judge
+	// Inputs from Online Judge
 	while(scanf("%d %d", &i, &j) != EOF )
 	{
 		printf("%d %d %d\n", i, j, maxCycle(i, j, maxMem));
@@ -93,89 +106,3 @@ int main()
 	*/
   return 0;
 }
-
-/*
-#ifndef ONLINE_JUDGE
-    #define ONLINE_JUDGE false
-#endif
-
-#include <unordered_map>
-//#include <iostream>
-
-
-using std::unordered_map;
-
-unsigned int cycleLength(unsigned int n, unordered_map<int, int> &maxMem)
-{
-    if (maxMem.find(n) != maxMem.end()) {
-        return maxMem[n];
-	}
-    else
-	{
-        unsigned int orig = n, cnt = 1;
-
-        while (n != 1) {
-            cnt++;
-            if (n%2 == 1) {n = 3*n+1;}
-            else {n = n/2;}
-		}
-        maxMem[orig] = cnt;
-
-        return cnt;
-	}
-}
-
-
-unsigned int maxCycle(unsigned int i, unsigned int j, unordered_map<int, int> &maxMem) {
-    if (i > j)
-	{
-		unsigned int temp;
-		temp = i;
-		i = j;
-		j = temp;
-	}
-
-	unsigned int maxCnt = 0;
-
-	for (unsigned int c = i; c <= j; c++)
-	{
-		unsigned int curCycle = cycleLength(c, maxMem);
-		if (curCycle >  maxCnt)
-		{
-			maxCnt = curCycle;
-		}
-	}
-
-	return maxCnt;
-}
-
-int main()
-{
-	unsigned int i, j;
-	unordered_map<int, int> maxMem;
-
-	//FILE *in = fopen("./text.txt", "r");
-	//while(fscanf(in, "%d %d", &i, &j) != EOF ) {
-	while(scanf("%d %d", &i, &j) != EOF ) {
-
-		printf("%d %d %d\n", i, j, maxCycle(i, j, maxMem));
-	}
-	// Create a map iterator and point to beginning of map
-	/*std::map<int, int>::iterator it = maxMem.begin();
-
-	// Iterate over the map using Iterator till end.
-	while (it != maxMem.end())
-	{
-		// Accessing KEY from element pointed by it.
-		int word = it->first;
-
-		// Accessing VALUE from element pointed by it.
-		int count = it->second;
-
-		std::cout << word << " :: " << count << std::endl;
-
-		// Increment the Iterator to point to next entry
-		it++;
-	}
-    return 0;
-}*/
