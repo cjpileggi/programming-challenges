@@ -1,11 +1,13 @@
 /*
-	Online Judge Problem 100 - The 3n + 1 problem
+  The 3n + 1 Problem
 
-	Programming Challenges (Skiena & Revilla)
-	Chapter 1.6.1
+  Programming Challenges (Skiena & Revilla): 1.6.1 The 3n + 1 problem
 
-	Runtime - ~0.050s
-- Uses unsigned int throughout program since input is always 0 or greater
+	Online Judge: Problem 100 - The 3n + 1 problem
+  Judge Version: C++ 5.3.0 - GNU C++ Compiler
+	Best Runtime - 0.010s
+
+  - Uses unsigned int throughout program since input is always 0 or greater
 */
 
 #ifndef ONLINE_JUDGE
@@ -90,15 +92,15 @@ int main()
 	// <integer, cycle length of integer>
 	unordered_map<int, int> maxMem;
 
-	// Inputs from Online Judge
+	// Read inputs from Online Judge
 	while(scanf("%d %d", &i, &j) != EOF )
 	{
 		printf("%d %d %d\n", i, j, maxCycle(i, j, maxMem));
 	}
 
-	// Inputs from file used for testing
+	// Read inputs from file used for testing
 	/*
-	FILE *in = fopen("./p161.txt", "r");
+	FILE *in = fopen("./p100.txt", "r");
 	while(fscanf(in, "%d %d", &i, &j) != EOF )
 	{
 		printf("%d %d %d\n", i, j, maxCycle(i, j, maxMem));
