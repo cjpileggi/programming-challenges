@@ -1,229 +1,168 @@
-#ifndef ONLINE_JUDGE
-  #define ONLINE_JUDGE false
-#endif
-
+#include <iostream>
+#include <vector>
 #include <string>
+#include <set>
 #include <algorithm>
+#include <sstream>
+#include <fstream>
 
-using std::string;
-using std::min;
-using std::max;
 
 class Image {
+public:
+    Image() {}
 
-  public:
-    char **img;
-    int rows, cols;
-
-    void command(char* cmd)
-    {
-      switch (cmd[0])
-      {
-        case 'I':
-          newImgI(cmd[1], cmd[2]);
-          break;
-        case 'C':
-          clearC();
-          break;
-        case 'L':
-          locationL(cmd[1], cmd[2], cmd[3]);
-          break;
-        case 'V':
-          vertV(cmd[1], cmd[2], cmd[3], cmd[4]);
-          break;
-        case 'H':
-          horizH(cmd[1], cmd[2], cmd[3], cmd[4]);
-          break;
-        case 'K':
-          rectK(cmd[1], cmd[2], cmd[3], cmd[4], cmd[5]);
-          break;
-        case 'F':
-          fillF(cmd[1], cmd[2], cmd[3]);
-          break;
-        case 'S':
-          saveS(cmd[1]);
-          break;
-        default:
-          break;
-      }
-    }
-
-    void newImgI(unsigned int M, unsigned int N)
-    {
-      //return [["0"] * int(cmd[1])] * int(cmd[2])
-      //creates duplicates of same list(all elements in column affected)
-
-      img = new char*[M];
-      for(int i = 0; i < M; i++)
-      {
-        img[i] = new char[N];
-        //self.img.append(["O" for x in range(0,M)])
-      }
-
-      for(int i=0; i < M; i++)
-      {
-        for(int j=0; j < N; j++)
-        {
-          img[i][j] = '0';
+    void command(const std::vector<std::string>& cmd) {
+        if (cmd[0] == "I") {
+            newImgI(std::stoi(cmd[1]), std::stoi(cmd[2]));
         }
-      }
-    }
-
-    void clearC()
-    {
-      for(int i=0; i < rows; i++)
-      {
-        for(int j=0; j < cols; j++)
-        {
-          img[i][j] = '0';
+        if (cmd[0] == "C") {
+            clearC();
         }
-      }
-    }
-
-    void locationL(unsigned int X, unsigned int Y, char C)
-    {
-      img[Y - 1][X - 1] = C;
-    }
-
-    void vertV(unsigned int X, unsigned int Y1, unsigned int Y2, char C)
-    {
-      for(int y=(min(Y2,Y1) - 1 ); y < max(Y1,Y2); y++)
-      {
-        img[y][X-1] = C;
-      }
-    }
-
-    void horizH(unsigned int X1, unsigned int X2, unsigned int Y, char C)
-    {
-      unsigned int lower = min(X2,X1) - 1;
-      unsigned int upper = max(X1,X2) - 1;
-
-      /*for x in range(lower, upper + 1):
-
-      self.img[Y-1][x] = C #* (upper + 1) - lower)*/
-
-      for (int i = lower; i <= upper; i++)
-      {
-        img[Y-1][i] = C;
-      }
-    }
-
-    void rectK(unsigned int X1, unsigned int Y1, unsigned int X2, unsigned int Y2, char C)
-    {
-
-      unsigned int lower = min(X1,X2) - 1;
-      unsigned int upper = max(X2,X1) - 1;
-
-      for(int i = min(Y1,Y2) - 1; i <= max(Y2,Y1); i++)
-      {
-        for(int j = lower; j <= upper + 1; j++)
-        {
-          img[i][j] = C;
+        if (cmd[0] == "L") {
+            locationL(std::stoi(cmd[1]), std::stoi(cmd[2]), cmd[3]);
         }
-      }
+        if (cmd[0] == "V") {
+            vertV(std::stoi(cmd[1]), std::stoi(cmd[2]), std::stoi(cmd[3]), cmd[4]);
+        }
+        if (cmd[0] == "H") {
+            horizH(std::stoi(cmd[1]), std::stoi(cmd[2]), std::stoi(cmd[3]), cmd[4]);
+        }
+        if (cmd[0] == "K") {
+            rectK(std::stoi(cmd[1]), std::stoi(cmd[2]), std::stoi(cmd[3]), std::stoi(cmd[4]), cmd[5]);
+        }
+        if (cmd[0] == "F") {
+            fillF(std::stoi(cmd[1]), std::stoi(cmd[2]), cmd[3]);
+        }
+        if (cmd[0] == "S") {
+            saveS(cmd[1]);
+        }
     }
 
-    void fillF(unsigned int X, unsigned int Y, char C)
-    {
+private:
+    std::vector<std::vector<std::string>> img;
 
-      int maxX = sizeof(img[0]);
-      int maxY = sizeof(img);
+    void newImgI(int M, int N) {
+        img.clear();
+        img.resize(N, std::vector<std::string>(M, "O"));
+    }
 
-      int origX = X - 1;
-      int origY = Y - 1;
+    void locationL(int X, int Y, const std::string& C) {
+        img[Y - 1][X - 1] = C;
+    }
 
-      char oldColor = img[origY][origX];
+    void clearC() {
+        for (auto& row : img) {
+            std::fill(row.begin(), row.end(), "O");
+        }
+    }
 
+    void vertV(int X, int Y1, int Y2, const std::string& C) {
+        for (int y = std::min(Y2, Y1) - 1; y < std::max(Y1, Y2); ++y) {
+            img[y][X - 1] = C;
+        }
+    }
 
-      if(oldColor != C)
-      {
-        bool *visited = new bool[V];
-        for(int i = 0; i < V; i++) { visited[i] = false; }
+    void horizH(int X1, int X2, int Y, const std::string& C) {
+        int lower = std::min(X2, X1) - 1;
+        int upper = std::max(X1, X2) - 1;
+        std::fill(img[Y - 1].begin() + lower, img[Y - 1].begin() + upper + 1, C);
+    }
 
-        list<int> queue;
+    void rectK(int X1, int Y1, int X2, int Y2, const std::string& C) {
+        int lower = std::min(X1, X2) - 1;
+        int upper = std::max(X2, X1) - 1;
+        for (int y = std::min(Y1, Y2) - 1; y < std::max(Y2, Y1); ++y) {
+            std::fill(img[y].begin() + lower, img[y].begin() + upper + 1, C);
+        }
+    }
 
-        visited[s] = true;
-        queue.push_back(s);
+    void fillF(int X, int Y, const std::string& C) {
+        int maxX = img[0].size();
+        int maxY = img.size();
+        int origX = X - 1;
+        int origY = Y - 1;
+        std::string oldColor = img[origY][origX];
 
-        list<int>::iterator i;
+        if (oldColor != C) {
+            std::vector<std::pair<int, int>> queue;
+            std::set<std::pair<int, int>> visited;
 
-        while(!queue.empty())
-        {
-            // Dequeue a vertex from queue and print it
-            s = queue.front();
-            cout << s << " ";
-            queue.pop_front();
+            queue.emplace_back(origX, origY);
+            visited.insert({origX, origY});
+            img[origY][origX] = C;
 
-            // Get all adjacent vertices of the dequeued
-            // vertex s. If a adjacent has not been visited,
-            // then mark it visited and enqueue it
-            for (i = adj[s].begin(); i != adj[s].end(); ++i)
-            {
-              if (!visited[*i])
-              {
-                visited[*i] = true;
-                queue.push_back(*i);
-              }
+            while (!queue.empty()) {
+                auto [curX, curY] = queue.back();
+                queue.pop_back();
+
+                for (int i = -1; i <= 1; ++i) {
+                    for (int j = -1; j <= 1; ++j) {
+                        if (std::abs(i) + std::abs(j) == 1) { // Only adjacent cells
+                            int nextX = curX + j;
+                            int nextY = curY + i;
+
+                            if (nextX >= 0 && nextX < maxX && nextY >= 0 && nextY < maxY) {
+                                if (img[nextY][nextX] == oldColor) {
+                                    img[nextY][nextX] = C;
+                                    if (visited.insert({nextX, nextY}).second) {
+                                        queue.emplace_back(nextX, nextY);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            /*visited = set()
-
-            //img[origY][origX] = newColor
-            queue.append((origX,origY))
-            visited.add((origX,origY))
-
-            nextX = 0
-            nextY = 0
-
-            self.img[queue[queueCur][1]][queue[queueCur][0]] = C
-            if (queue[queueCur][0], queue[queueCur][1]) not in visited:
-            visited.add((queue[queueCur][0], queue[queueCur][1]))
-
-
-            if (queue[queueCur][0], queue[queueCur][1]) not in visited:
-            visited.add((queue[queueCur][0], queue[queueCur][1]))
-
-            while queueCur < len(queue):
-            for i in range(-1,2):
-            for j in range(-1,2):
-            nextX = queue[queueCur][0] + j
-            nextY = queue[queueCur][1] + i
-
-            if nextX in range(0, maxX) and nextY in range(0,maxY):
-            if self.img[nextY][nextX] == oldColor:
-            self.img[nextY][nextX] = C
-            if (nextX,nextY) not in visited:
-            queue.append((nextX,nextY))
-            queueCur += 1
-        */}
-      }
+        }
     }
 
-    void saveS(char Name)
-    {
-      printf("%s", Name);
-
-      for(int i = 0; i < sizeof(img); i++)
-      {
-        for(int j = 0; j < sizeof(img[i]); j++)
-        {
-          printf("%c", j);
+    void saveS(const std::string& Name) {
+        std::cout << Name << std::endl;
+        for (const auto& row : img) {
+            for (const auto& cell : row) {
+                std::cout << cell;
+            }
+            std::cout << std::endl;
         }
-        printf("\n");
-      }
     }
 };
 
+int main() {
+    Image img;
+    std::string line;
 
-int main()
-{
-  /*
-  //FILE *in = fopen("./text.txt", "r");
-  //while(fscanf(in, "%d %d", &i, &j) != EOF ) {
-  while(scanf("%d %d", &i, &j) != EOF ) {
+    
+    while (std::getline(std::cin, line)) {
+        if (line != "X") {
+            std::vector<std::string> cmd;
+            std::istringstream iss(line);
+            std::string token;
+            while (iss >> token) {
+                cmd.push_back(token);
+            }
+            img.command(cmd);
+        } else {
+            //std::cout << std::endl;
+            break;
+        }
+    }
+    
+    /*
+    std::ifstream file("pc165_inputs.txt");
+    while (std::getline(file, line)) {
+        if (line != "X") {
+            std::vector<std::string> cmd;
+            std::istringstream iss(line);
+            std::string token;
+            while (iss >> token) {
+                cmd.push_back(token);
+            }
+            img.command(cmd);
+        } else {
+            //std::cout << std::endl;
+            break;
+        }
+    }*/
 
-  printf("%d %d %d\n", i, j, maxCycle(i, j, maxMem));
-  }
-
-  */
-  return 0;
+    return 0;
 }
