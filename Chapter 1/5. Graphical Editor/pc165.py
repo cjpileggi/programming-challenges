@@ -118,17 +118,27 @@ class Image:
         print(Name)
         
         for x in self.img:
-            for y in x:
-                print(y, end="")
-            print("")
+            print(''.join(x))
 
 # Class End            
     
 if __name__ == "__main__":
     img = Image()
-    #with open('pc165_inputs.txt') as f:
-    for line in stdin:#f: 
-        #print(line)
-        img.command([x for x in line.split()])
+
+    for line in stdin: 
+        if line != 'X':
+            img.command([x for x in line.split()])
+        else:
+            break
+    
+
+    """with open('pc165_inputs.txt') as f:
+        for line in f:#stdin:#f: 
+            if line != 'X':
+                img.command([x for x in line.split()])
+            else:
+                break"""
+    print("")
     del img
-    print()
+
+    exit(0)
